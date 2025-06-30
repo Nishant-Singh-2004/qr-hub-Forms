@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Hub Form</title>
+		<script src="https://accounts.google.com/gsi/client" async defer></script>
+	</head>
+
+	<body>
+  		<h2>Please sign in to proceed to the request form...</h2>
+
+  		<!-- Google Sign-In button -->
+		<div id="g_id_onload"
+			data-client_id="628170979899-a00bph8b6ejm8mn172c46dgs8b59qkjk.apps.googleusercontent.com"
+			data-callback="handleCredentialResponse"
+			data-auto_prompt="false">
+		</div>
+
+		<div class="g_id_signin"
+			data-type="standard"
+			data-size="large"
+			data-theme="outline"
+			data-text="sign_in_with"
+			data-shape="rectangular"
+			data-logo_alignment="left">
+		</div>
+
+		<script>
+			const urlParams = new URLSearchParams(window.location.search);
+			const locationName = urlParams.get('loc') || "Unknown";
+
+			function handleCredentialResponse(response) {
+			const payload = JSON.parse(atob(response.credential.split('.')[1]));
+			const email = payload.email;
+			const name = payload.name || (payload.given_name + " " + payload.family_name);
+
+			// Here put google form stuff
+						const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSe2QYKZWnUWgzc67VbsynY6-QzHd2JdUK5-wPHGT_a10Ev7Uw/viewform";
+						const params = new URLSearchParams({
+							"entry.1527514176": name,
+							"entry.2025088552": email,
+							"entry.1080166176": locationName 
+						});
+
+						window.location.href = `${formURL}?usp=pp_url&${params.toString()}`;
+			}
+		</script>
+	</body>
+</html>
